@@ -30,7 +30,9 @@ const db = mysql.createConnection(
 // 		message: "Hello World",
 // 	});
 // });
-
+db.query("SELECT * FROM candidates", (err, rows) => {
+	console.log(rows);
+});
 // Default response for any other request that's not supported by the app (Not Found)
 app.use((req, res) => {
 	res.status(404).end();
