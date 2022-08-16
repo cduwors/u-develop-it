@@ -30,9 +30,40 @@ const db = mysql.createConnection(
 // 		message: "Hello World",
 // 	});
 // });
-db.query("SELECT * FROM candidates", (err, rows) => {
-	console.log(rows);
-});
+
+//GET all candidates
+// db.query("SELECT * FROM candidates", (err, rows) => {
+// 	console.log(rows);
+// });
+
+//GET a single candidate
+// db.query("SELECT * FROM candidates WHERE id = 1", (err, row) => {
+// 	if (err) {
+// 		console.log(err);
+// 	}
+// 	console.log(row);
+// });
+
+//DELETE a candidate
+// db.query("DELETE FROM candidates WHERE id = ?", 1, (err, result) => {
+// 	if (err) {
+// 		console.log(err);
+// 	}
+// 	console.log(result);
+// });
+
+//CREATE a candidate
+// const sql =
+// 	"INSERT INTO candidates (id, first_name, last_name, industry_connected) VALUES (?,?,?,?)";
+// const params = [1, "Ronald", "Firbank", 1];
+
+// db.query(sql, params, (err, result) => {
+// 	if (err) {
+// 		console.log(err);
+// 	}
+// 	console.log(result);
+// });
+
 // Default response for any other request that's not supported by the app (Not Found)
 app.use((req, res) => {
 	res.status(404).end();
