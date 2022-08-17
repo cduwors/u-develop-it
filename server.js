@@ -1,42 +1,30 @@
-//import express for use
 const express = require("express");
-//install mysql2 package for use
 const mysql = require("mysql2");
+const inputCheck = require("./utils/inputCheck");
 
-//add port designation and the app expression
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-// add Express middleware
+// Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// function to validate user input for new candidate
-const inputCheck = require("./utils/inputCheck");
-
-//connect to database
+// Connect to database
 const db = mysql.createConnection(
 	{
 		host: "localhost",
-		//Your MySQL username,
+		// Your MySQL username,
 		user: "root",
-		//Your MySQL password
+		// Your MySQL password
 		password: "",
 		database: "election",
 	},
-	console.log("connected to the election database")
+	console.log("Connected to the election database.")
 );
 
-//test route to make sure server is connected - always placed above the PORT
-// app.get("/", (req, res) => {
-// 	res.json({
-// 		message: "Hello World",
-// 	});
-// });
-
-//GET all candidates
+// Get all candidates
 app.get("/api/candidates", (req, res) => {
-	const sql = "SELECT * FROM candidates";
+	const sql = `SELECT * FROM candidates`;
 
 	db.query(sql, (err, rows) => {
 		if (err) {
@@ -50,9 +38,9 @@ app.get("/api/candidates", (req, res) => {
 	});
 });
 
-//GET a single candidate
+// Get a single candidate
 app.get("/api/candidate/:id", (req, res) => {
-	const sql = "SELECT * FROM candidates WHERE id = ?";
+	const sql = `SELECT * FROM candidates WHERE id = ?`;
 	const params = [req.params.id];
 
 	db.query(sql, params, (err, row) => {
@@ -67,9 +55,9 @@ app.get("/api/candidate/:id", (req, res) => {
 	});
 });
 
-//DELETE a candidate
+// Delete a candidate
 app.delete("/api/candidate/:id", (req, res) => {
-	const sql = "DELETE FROM candidates WHERE id = ?";
+	const sql = `DELETE FROM candidates WHERE id = ?`;
 	const params = [req.params.id];
 
 	db.query(sql, params, (err, result) => {
@@ -81,7 +69,7 @@ app.delete("/api/candidate/:id", (req, res) => {
 			});
 		} else {
 			res.json({
-				message: "successfully deleted",
+				message: "deleted",
 				changes: result.affectedRows,
 				id: req.params.id,
 			});
@@ -89,7 +77,7 @@ app.delete("/api/candidate/:id", (req, res) => {
 	});
 });
 
-//CREATE a candidate
+// Create a candidate
 app.post("/api/candidate", ({ body }, res) => {
 	const errors = inputCheck(
 		body,
@@ -102,8 +90,8 @@ app.post("/api/candidate", ({ body }, res) => {
 		return;
 	}
 
-	const sql =
-		"INSERT INTO candidates (first_name, last_name, industry_connected) VALUES (?,?,?)";
+	const sql = `INSERT INTO candidates (first_name, last_name, industry_connected)
+    VALUES (?,?,?)`;
 	const params = [body.first_name, body.last_name, body.industry_connected];
 
 	db.query(sql, params, (err, result) => {
@@ -112,18 +100,17 @@ app.post("/api/candidate", ({ body }, res) => {
 			return;
 		}
 		res.json({
-			message: "candidate successfully added",
+			message: "success",
 			data: body,
 		});
 	});
 });
 
-// Default response for any other request that's not supported by the app (Not Found)
+// Default response for any other request (Not Found)
 app.use((req, res) => {
 	res.status(404).end();
 });
 
-//function to start Express.js on port 3001
 app.listen(PORT, () => {
 	console.log(`Server running on port ${PORT}`);
 });
