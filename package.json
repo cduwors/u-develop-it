@@ -20,7 +20,7 @@
 	"homepage": "https://github.com/cduwors/u-develop-it#readme",
 	"dependencies": {
 		"express": "^4.18.1",
-		"mysql2": "^2.3.3"
+		"mysql2": "^2.2.5"
 	},
 	"devDependencies": {
 		"jest": "^28.1.3"
